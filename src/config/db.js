@@ -1,5 +1,24 @@
-import {Sequelize} from "sequelize";
-
-export const database = new Sequelize(`${process.env.DB_TYPE}://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@localhost:5432/${process.env.DB_DATABASE}`, {
-    logging: false
-})
+require('dotenv').config()
+module.exports = {
+  "development": {
+    "username": process.env.DB_USERNAME,
+    "password": process.env.DB_PASSWORD,
+    "database": process.env.DB_DATABASE,
+    "host": "127.0.0.1",
+    "dialect": process.env.DB_TYPE
+  },
+  "test": {
+    "username": process.env.DB_USERNAME,
+    "password": process.env.DB_PASSWORD,
+    "database": process.env.DB_DATABASE,
+    "host": "127.0.0.1",
+    "dialect": process.env.DB_TYPE
+  },
+  "production": {
+    "username": process.env.DB_USERNAME,
+    "password": process.env.DB_PASSWORD,
+    "database": process.env.DB_DATABASE,
+    "host": "127.0.0.1",
+    "dialect": process.env.DB_TYPE
+  }
+}
