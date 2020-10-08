@@ -1,11 +1,13 @@
-import express from "express"
+import express from "express";
 import ProductController from "../controllers/ProductController";
-const router = express.Router()
+import verify from "../middlewares/verifyToken";
 
-router.get("/", ProductController.index)
+const router = express.Router();
+
+router.get("/", ProductController.index);
 // router.get("/:id", ArticleController.show)
-router.post("/",  ProductController.store)
-router.put("/:id", ProductController.update)
-router.delete("/:id",  ProductController.destroy)
+router.post("/", verify, ProductController.store);
+router.put("/:id", verify, ProductController.update);
+router.delete("/:id", verify, ProductController.destroy);
 
-export default router
+export default router;
