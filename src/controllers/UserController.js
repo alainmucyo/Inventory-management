@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+import {generateToken} from '../middlewares/verifyToken'
 import models from "../models";
 import { loginValidation, signupValidation } from "../validator/userValidation";
 import { onError, onSuccess } from "../utils/response";
@@ -54,7 +54,7 @@ export class UserController {
 
     // create a token
 
-    const token = jwt.sign({ user: user }, process.env.JWT_SECRET);
+    const token = generateToken(user);
     res.header("auth-token", token).json({
       token,
       message: "User Logged in successfully",

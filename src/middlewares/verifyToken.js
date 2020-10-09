@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-const verifyToken = (req, res, next) => {
+export const verifyToken = (req, res, next) => {
   const token = req.header("auth-token");
   if (!token)
     return res.status(401).json({
@@ -17,4 +17,18 @@ const verifyToken = (req, res, next) => {
   }
 };
 
-export default verifyToken;
+export const generateToken = (userinfo) => {
+  try {
+    const payload = {
+      email: userinfo.email,
+      id: userinfo.id,
+      name:userinfo.name
+    }
+    const token = jwt.sign({payload:payload}, process.env.JWT_SECRET);
+    return token
+  } catch (error) {
+    return error
+  }
+    
+}
+
