@@ -1,4 +1,5 @@
 import models from "../models";
+import productValidation from "../validations/product.validator";
 
 class ProductController {
   static index(req, res) {
@@ -13,8 +14,9 @@ class ProductController {
   }
 
   static store(req, res) {
-    if (!req.body)
-      return res.status(422).send({ message: "Input field are required!" });
+    const {error} = productValidation(req.body);
+    if (error)
+    return res.status(422).send({message:"Validation failed",data:error.details[0].message})
 
     models.product
       .create({
@@ -35,8 +37,10 @@ class ProductController {
   }
 
   static update(req, res) {
-    if (!req.body)
-      return res.status(422).send({ message: "Input field are required!" });
+    const {error} = productValidation(req.body);
+    if (error)
+      return res.status(422).send({message:"Validation failed",data:error.details[0].message})
+
     const { id } = req.params;
     models.product
       .update(req.body, { where: { id } })
