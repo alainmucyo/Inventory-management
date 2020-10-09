@@ -1,3 +1,4 @@
+import e from "express";
 import models from "../models";
 import productValidation from "../validations/product.validator";
 
@@ -65,10 +66,41 @@ class ProductController {
       const item = await models.product.findByPk(id);
       const { quantity } = req.body;
       item.quantity += quantity;
+      
       await item.save();
       return res
         .status(200)
         .json({ message: "Updated quantity", quantity: item.quantity });
+    } catch (err) {
+      console.log("Error", err);
+      return res.status(404).send({ message: "Not found!" });
+    }
+  }
+
+  static async dispatchProductQuantity(req, res) {
+    let User = {
+      name:"david",
+      email:"devu@gmail.com",
+      password:"12345"
+    }
+    try {
+      if (!req.body)
+        return res.status(422).send({ message: "Input field are required!" });
+      const { id } = req.params;
+      const oneProduct = await models.product.findByPk(id);
+      const { quantity } = req.body;
+      let quantityOfOneProduct = oneProduct.quantity;
+      if((quantityOfOneProduct - quantity) >=0){
+        return oneProduct.quantity -= quantity;
+      } else {
+        oneProduct.quantity = 0;
+        return res.send({message:"You don't have such product in stock, Please purchase them!"})
+      }
+      
+      await oneProduct.save();
+      return res
+        .status(200)
+        .json({ message: "You successfully decrement the product", quantity: oneProduct.quantity });
     } catch (err) {
       console.log("Error", err);
       return res.status(404).send({ message: "Not found!" });
