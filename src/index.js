@@ -2,6 +2,8 @@ import express from "express";
 import productRouter from "./router/product.routes";
 import userRouter from "./router/user.routes";
 
+import sequelize from "sequelize";
+
 const port = process.env.PORT || 5000;
 const app = express();
 
