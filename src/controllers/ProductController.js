@@ -10,7 +10,8 @@ class ProductController {
         return res.status(200).send({ products });
       })
       .catch((err) => {
-        return res.status(500).send({ message: "Server error!" });
+        console.log(err)
+        return res.status(500).send({ message: "Server error!",err });
       });
   }
 
