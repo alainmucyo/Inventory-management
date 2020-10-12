@@ -13,8 +13,8 @@ router.put("/:id", verifyToken, ProductController.update);
 router.delete("/:id", verifyToken, ProductController.destroy);
 
 
-router.patch("/:id", ProductController.updateQuantity);
-router.patch("/dispatch/:id",ProductController.dispatchProductQuantity);
+router.patch("/:id",verifyToken, ProductController.updateQuantity);
+router.patch("/dispatch/:id",verifyToken,ProductController.dispatchProductQuantity);
 
 
 export default router;
