@@ -79,32 +79,28 @@ class ProductController {
   }
 
   static async dispatchProductQuantity(req, res) {
-    let User = {
-      name:"david",
-      email:"devu@gmail.com",
-      password:"12345"
-    }
     try {
-      if (!req.body)
-        return res.status(422).send({ message: "Input field are required!" });
+      if (!req.body.quantity)
+        return res.status(422).send({ message:  "quantity field is required!" });
       const { id } = req.params;
       const oneProduct = await models.product.findByPk(id);
+      if(!oneProduct)
+        return res.status(404).send({message:"Not Found!"});
       const { quantity } = req.body;
-      let quantityOfOneProduct = oneProduct.quantity;
-      if((quantityOfOneProduct - quantity) >=0){
-        return oneProduct.quantity -= quantity;
-      } else {
-        oneProduct.quantity = 0;
-        return res.send({message:"You don't have such product in stock, Please purchase them!"})
-      }
-      
+      if((oneProduct.quantity - quantity) >=0)
+      oneProduct.quantity -= quantity;
+      if((oneProduct.quantity - quantity) <0)  
+      return res.status(500).send({message:"You don't have such product in stock, Please purchase them!"});
       await oneProduct.save();
       return res
         .status(200)
         .json({ message: "You successfully decrement the product", quantity: oneProduct.quantity });
+     
     } catch (err) {
       console.log("Error", err);
-      return res.status(404).send({ message: "Not found!" });
+      
+      
+      return res.status(500).send({ message: "Invalid!" });
     }
   }
 
